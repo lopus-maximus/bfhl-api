@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.text());
 
 function createAlternatingCapsString(alphabets) {
   let allChars = "";
@@ -32,6 +33,7 @@ app.post("/bfhl", (req, res) => {
   try {
     let body = req.body;
 
+    // Handle raw string payloads
     if (typeof body === "string") {
       try {
         body = JSON.parse(body);
