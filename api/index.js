@@ -18,14 +18,11 @@ function createAlternatingCapsString(alphabets) {
   });
 
   let reversed = allChars.split("").reverse().join("");
-
   let result = "";
+
   for (let i = 0; i < reversed.length; i++) {
-    if (i % 2 === 0) {
-      result += reversed[i].toLowerCase();
-    } else {
-      result += reversed[i].toUpperCase();
-    }
+    result +=
+      i % 2 === 0 ? reversed[i].toLowerCase() : reversed[i].toUpperCase();
   }
 
   return result;
@@ -33,7 +30,20 @@ function createAlternatingCapsString(alphabets) {
 
 app.post("/bfhl", (req, res) => {
   try {
-    const { data } = req.body;
+    let body = req.body;
+
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        return res.status(400).json({
+          is_success: false,
+          error: "Invalid JSON format",
+        });
+      }
+    }
+
+    const { data } = body;
 
     if (!data || !Array.isArray(data)) {
       return res.status(400).json({
